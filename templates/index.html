@@ -7,15 +7,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
         }
-        .conversation {
+        .container {
             width: 50%;
             margin: 40px auto;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .conversation {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 400px;
         }
         .message {
             margin-bottom: 10px;
@@ -24,24 +30,47 @@
         }
         .user {
             background-color: #cff6cf;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
         .ai {
             background-color: #ffc6c6;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .input-field {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 16px;
+        }
+        .send-button {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="conversation" id="conversation">
-        {% for message in conversation_history %}
-            <div class="message {% if message.role == 'user' %}user{% else %}ai{% endif %}">
-                {{ message.content }}
-            </div>
-        {% endfor %}
+    <div class="container">
+        <div class="conversation" id="conversation">
+            {% for message in conversation_history %}
+                <div class="message {% if message.role == 'user' %}user{% else %}ai{% endif %}">
+                    {{ message.content }}
+                </div>
+            {% endfor %}
+        </div>
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            <button type="submit" class="send-button">Send</button>
+        </form>
     </div>
-    <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Type your message here...">
-        <button type="submit">Send</button>
-    </form>
 
     <script>
         const conversationDiv = document.getElementById('conversation');
