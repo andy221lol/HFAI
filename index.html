@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .conversation {
+            width: 50%;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .user {
+            background-color: #cff6cf;
+        }
+        .ai {
+            background-color: #ffc6c6;
+        }
+    </style>
+</head>
+<body>
+    <div class="conversation">
+        {% for message in conversation_history %}
+            <div class="message {% if message.role == 'user' %}user{% else %}ai{% endif %}">
+                {{ message.content }}
+            </div>
+        {% endfor %}
+        <form method="post">
+            <input type="text" name="user_input" placeholder="Type your message here...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
