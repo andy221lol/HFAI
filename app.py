@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import os
 from huggingface_hub import InferenceClient
 
@@ -12,9 +12,9 @@ conversation_history = []
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    global conversation_history
     if request.method == "POST":
-        user_input = request.form["user_input"]
+        data = request.get_json()
+        user_input = data['message']
         conversation_history.append({"role": "user", "content": user_input})
         completion = client.chat.completions.create(
             model="Qwen/Qwen2.5-Coder-32B-Instruct", 
@@ -25,5 +25,5 @@ def index():
         )
         ai_response = completion.choices[0].message.content
         conversation_history.append({"role": "assistant", "content": ai_response})
-        return render_template("index.html", conversation_history=conversation_history)
+        return jsonify({'ai_response': ai_response})
     return render_template("index.html", conversation_history=conversation_history)
