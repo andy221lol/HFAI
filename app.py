@@ -12,7 +12,11 @@ conversation_history = []
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
+    global conversation_history
+    if request.method == "GET":
+        conversation_history = []
+        return render_template("index.html", conversation_history=conversation_history)
+    elif request.method == "POST":
         data = request.get_json()
         user_input = data['message']
         conversation_history.append({"role": "user", "content": user_input})
@@ -25,5 +29,4 @@ def index():
         )
         ai_response = completion.choices[0].message.content
         conversation_history.append({"role": "assistant", "content": ai_response})
-        return jsonify({'ai_response': ai_response})
-    return render_template("index.html", conversation_history=conversation_history)
+        return jsonify({'ai_response': ai_response, 'conversation_history': conversation_history})
