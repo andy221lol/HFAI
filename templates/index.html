@@ -76,13 +76,25 @@
         const conversationDiv = document.getElementById('conversation');
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
-        let conversationHistory = [];
+        let conversationHistory = {{ conversation_history | tojson }};  // Inject the conversation history from Flask
+
+        // Display the conversation on page load
+        window.onload = function() {
+            conversationHistory.forEach((message) => {
+                const newMessage = document.createElement('div');
+                newMessage.classList.add('message', message.role);
+                newMessage.textContent = message.content;
+                conversationDiv.appendChild(newMessage);
+            });
+            conversationDiv.scrollTop = conversationDiv.scrollHeight;
+        };
 
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const message = userInput.value;
             userInput.value = '';
 
+            // Send message and conversation history to the backend
             fetch('/', {
                 method: 'POST',
                 headers: {
@@ -93,7 +105,8 @@
             .then((response) => response.json())
             .then((data) => {
                 conversationHistory = data.conversationHistory;
-                conversationDiv.innerHTML = '';
+                conversationDiv.innerHTML = '';  // Clear current conversation
+                // Render the updated conversation
                 conversationHistory.forEach((message) => {
                     const newMessage = document.createElement('div');
                     newMessage.classList.add('message', message.role);
