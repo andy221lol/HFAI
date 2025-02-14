@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import os
 from huggingface_hub import InferenceClient
-from keep_alive import keep_alive
 
 app = Flask(__name__)
 
@@ -28,6 +27,3 @@ def index():
         conversation_history.append({"role": "assistant", "content": ai_response})
         return render_template("index.html", conversation_history=conversation_history)
     return render_template("index.html", conversation_history=conversation_history)
-
-keep_alive()
-app.run()
