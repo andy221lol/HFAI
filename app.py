@@ -3,7 +3,7 @@ import os
 from huggingface_hub import InferenceClient
 
 app = Flask(__name__)
-token = os.getenv("HFToken")
+token = os.environ("HFToken")
 # Initialize the client with your API key
 client = InferenceClient(api_key=token)
 
