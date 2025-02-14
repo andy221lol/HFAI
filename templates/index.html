@@ -47,6 +47,7 @@
         const conversationDiv = document.getElementById('conversation');
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
+        let conversationHistory = [];
 
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -58,12 +59,13 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: message })
+                body: JSON.stringify({ message: message, conversationHistory: conversationHistory })
             })
             .then((response) => response.json())
             .then((data) => {
+                conversationHistory = data.conversationHistory;
                 conversationDiv.innerHTML = '';
-                data.conversation_history.forEach((message) => {
+                conversationHistory.forEach((message) => {
                     const newMessage = document.createElement('div');
                     newMessage.classList.add('message', message.role);
                     newMessage.textContent = message.content;
