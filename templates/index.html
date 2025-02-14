@@ -62,16 +62,13 @@
             })
             .then((response) => response.json())
             .then((data) => {
-                const newMessage = document.createElement('div');
-                newMessage.classList.add('message', 'user');
-                newMessage.textContent = message;
-                conversationDiv.appendChild(newMessage);
-
-                const aiResponse = document.createElement('div');
-                aiResponse.classList.add('message', 'ai');
-                aiResponse.textContent = data.ai_response;
-                conversationDiv.appendChild(aiResponse);
-
+                conversationDiv.innerHTML = '';
+                data.conversation_history.forEach((message) => {
+                    const newMessage = document.createElement('div');
+                    newMessage.classList.add('message', message.role);
+                    newMessage.textContent = message.content;
+                    conversationDiv.appendChild(newMessage);
+                });
                 conversationDiv.scrollTop = conversationDiv.scrollHeight;
             })
             .catch((error) => console.error(error));
