@@ -5,7 +5,7 @@ from huggingface_hub import InferenceClient
 app = Flask(__name__)
 
 # Initialize the client with your API key
-client = InferenceClient(api_key=os.getenv("HFToken"))
+client = InferenceClient(api_key=os.getenv("HFTOKEN"))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
